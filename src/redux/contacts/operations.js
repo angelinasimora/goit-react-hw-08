@@ -1,46 +1,57 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { api } from "../auth/operations";
 
-import axios from "axios";
-
-axios.defaults.baseURL = "https://67be2f4d321b883e790f568b.mockapi.io";
-
-//GET
+// GET
 export const fetchContacts = createAsyncThunk(
-    "contacts/fetchAll",
-    async (_, thunkAPI) => {
-        try {
-            const response = await axios.get("/contacts");
-             return response.data;
-        } catch (e) {
-            return thunkAPI.rejectWithValue(e.message);
-        }
+  "contacts/fetchAll",
+  async (_, { signal, rejectWithValue }) => {
+    try {
+      const response = await api.get("/contacts", { signal });
+      return response.data;
+    } catch (e) {
+      return rejectWithValue(e.message);
     }
-    )
+  }
+);
 
+// POST
+export const addContact = createAsyncThunk(
+  "contacts/addContact",
+  async (contact, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState(); 
+      const token = state.auth.token; 
 
-//POST
-export const addContact =  createAsyncThunk(
-    "contacts/addContact",
-    async (contact, thunkAPI) => {
-        try {
-            const response = await axios.post("/contacts", contact);
-             return response.data;
-        } catch (e) {
-            return thunkAPI.rejectWithValue(e.message);
-        }
+    
+      
+      if (!token) {
+        return thunkAPI.rejectWithValue("No token provided");
+      }
+
+      const response = await api.post("/contacts", contact, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
+  }
 );
 
 
-//DELETE
+// DELETE
 export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",
-  async (contactId, thunkAPI) => {
+  async (contactId, { rejectWithValue }) => {
     try {
-      await axios.delete(`/contacts/${contactId}`);
-      return contactId; 
+      await api.delete(`/contacts/${contactId}`);
+      return contactId;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

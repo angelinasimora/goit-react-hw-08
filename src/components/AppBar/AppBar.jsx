@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import {Navigation} from '../Navigation/Navigation'
 import { useSelector } from 'react-redux';
 import AuthNav from '../AuthNav/AuthNav';
@@ -11,7 +11,7 @@ export default function AppBar() {
     return (
         <header className={css.header}>
            <Navigation/>
-                <Link to="/">Home</Link>
+                {/* <Link to="/">Back</Link> */}
                   {isLoggedIn ? <UserMenu /> : <AuthNav />}
         </header>
     )
