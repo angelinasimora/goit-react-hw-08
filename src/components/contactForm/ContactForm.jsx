@@ -8,12 +8,12 @@ export default function ContactForm() {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formattedPhone = phone.replace(/\D/g, ""); 
+    const formattedNumber = number.replace(/\D/g, ""); 
 
     const isDuplicate = contacts.some(
       (contact) => contact.name.toLowerCase() === name.toLowerCase()
@@ -25,9 +25,9 @@ export default function ContactForm() {
     }
 
     try {
-      await dispatch(addContact({ name, phone: formattedPhone })).unwrap();
+      await dispatch(addContact({ name, number: formattedNumber })).unwrap();
       setName("");
-      setPhone("");
+      setNumber("");
     } catch (error) {
       console.error("Помилка додавання контакту:", error.message, error);
     }
@@ -45,8 +45,8 @@ export default function ContactForm() {
       <input
         type="tel"
         placeholder="Phone"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
         required
       />
       <button type="submit">Add Contact</button>

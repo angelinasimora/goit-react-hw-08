@@ -11,7 +11,7 @@ export default function ContactList() {
     <div className={css.list}>
       {contacts.map((contact) => (
         <div key={contact.id} className={css.contact}>
-          <p>{contact.name}: {contact.phone}</p>
+          <p>{contact.name}: {contact.number}</p>
           <button onClick={() => dispatch(deleteContact(contact.id))}>
             Delete
           </button>
