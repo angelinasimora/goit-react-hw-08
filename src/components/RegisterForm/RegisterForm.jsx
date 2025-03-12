@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../redux/auth/operations';
 import css from './RegisterForm.module.css';
 
-export const RegisterForm = () => {
+export const RegistrationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
